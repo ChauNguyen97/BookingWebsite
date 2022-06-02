@@ -1,5 +1,10 @@
-import { 
-    faBed, faCalendarDays, faCar, faPerson, faPlane, faTaxi 
+import {
+  faBed,
+  faCalendarDays,
+  faCar,
+  faPerson,
+  faPlane,
+  faTaxi,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./header.css";
@@ -9,7 +14,7 @@ import { DateRange } from "react-date-range";
 import { useState } from "react";
 import { format } from "date-fns";
 
-const Header = ({type}) => {
+const Header = ({ type }) => {
   const [openDate, setOpenDate] = useState(false);
 
   const [date, setDate] = useState([
@@ -28,16 +33,22 @@ const Header = ({type}) => {
     room: 1,
   });
 
-  const handleOption=(name, operation)=>{
-    setOptions(prev=>{return{
-      ...prev,
-      [name]: operation === "i" ? options[name] +1: options[name] -1,
-    }})
+  const handleOption = (name, operation) => {
+    setOptions((prev) => {
+      return {
+        ...prev,
+        [name]: operation === "i" ? options[name] + 1 : options[name] - 1,
+      };
+    });
   };
 
   return (
     <div className="header">
-      <div className={type === "list" ? "headerContainer listMode" : "headerContainer"}>
+      <div
+        className={
+          type === "list" ? "headerContainer listMode" : "headerContainer"
+        }
+      >
         <div className="headerList">
           <div className="headerListItem active">
             <FontAwesomeIcon icon={faBed} />
@@ -82,7 +93,12 @@ const Header = ({type}) => {
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
                 <span
-                  onClick={() => setOpenDate(!openDate)}
+                  onClick={() => {
+                    if (openOptions) {
+                      setOpenOptions(!openOptions);
+                      setOpenDate(!openDate);
+                    } else setOpenDate(!openDate);
+                  }}
                   className="headerSearchText"
                 >
                   {`${format(date[0].startDate, "MM/dd/yyyy")} 
@@ -101,7 +117,13 @@ const Header = ({type}) => {
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faPerson} className="headerIcon" />
                 <span
-                  onClick={() => setOpenOptions(!openOptions)}
+                  onClick={() => {
+                    if (openDate) {
+                      setOpenOptions(!openOptions);
+                      setOpenDate(!openDate);
+                    }
+                    setOpenOptions(!openOptions);
+                  }}
                   className="headerSearchText"
                 >{`${options.adult} adults ${options.children} children ${options.room} room`}</span>
                 {openOptions && (
@@ -181,6 +203,6 @@ const Header = ({type}) => {
       </div>
     </div>
   );
-}
+};
 
 export default Header;
